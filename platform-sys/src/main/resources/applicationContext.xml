@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+  <context:annotation-config />
+  <aop:aspectj-autoproxy proxy-target-class="true"/>
+  <context:property-placeholder location="classpath:application.properties" />
+  <aop:config>
+    <aop:pointcut id="serviceOperation" expression="bean(*Service)" />
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
+  </aop:config>
+  <tx:advice id="txAdvice" transaction-manager="txManager">
+    <tx:attributes>
+      <tx:method name="find*" read-only="true" />
+      <tx:method name="get*" read-only="true" />
+      <tx:method name="load*" read-only="true" />
+      <tx:method name="list*" read-only="true" />
+      <tx:method name="search*" read-only="true" />
+      <!--<tx:method name="test*" read-only="true" />-->
+      <tx:method name="*" rollback-for="Throwable" />
+    </tx:attributes>
+  </tx:advice>
+  <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource" />
+  </bean>
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.driverClassName}" />
+    <property name="url" value="${jdbc.url}" />
+    <property name="username" value="${jdbc.username}" />
+    <property name="password" value="${jdbc.password}" />
+    <property name="initialSize" value="${database.minconn}"/>
+    <property name="maxActive" value="${database.maxconn}"/>
+    <property name="maxWait" value="${database.maxwait}"/>
+    <!-- 空闲链接检查 -->
+    <property name="logAbandoned" value="true"/>
+    <property name="removeAbandoned" value="true"/>
+    <property name="removeAbandonedTimeout" value="180"/>
+    <property name="minEvictableIdleTimeMillis" value="1800000"/>
+    <!-- 心跳检查 -->
+    <property name="testWhileIdle" value="true"/>
+    <property name="testOnBorrow" value="false"/>
+    <property name="testOnReturn" value="false"/>
+    <property name="timeBetweenEvictionRunsMillis" value="300000"/>
+    <property name="validationQuery" value="select 1"/>
+    <property name="numTestsPerEvictionRun" value="${database.maxconn}"/>
+  </bean>
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="configLocation" value="classpath:mybaits-core.xml"/>
+    <property name="mapperLocations" value="classpath*:cn/com/signheart/component/**/**/mapper/*mapper.xml"></property>
+  </bean>
+  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="cn.com.signheart.component" />
+  </bean>
+
+
+  <import resource="classpath:cn/com/signheart/component/core/resource/spring.xml" />
+  <import resource="classpath:cn/com/signheart/component/sys/resource/spring.xml" />
+</beans>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<menus>
+  <menu name="系统管理" permission="systemManage"
+        icon="/themes/default/images/menu/icon13.png">
+    <menu name="用户管理" link="/jsp/component/systemmgr/user2/userList.jsp"
+          permission="userManage" />
+    <menu name="角色管理" link="/jsp/component/systemmgr/role2/roleList.jsp"
+          permission="roleManage" />
+    <menu name="权限管理"
+          link="/jsp/component/systemmgr/qywpermission/permissionList.jsp"
+          permission="permissionManage" />
+    <menu name="组织机构管理" link="/jsp/component/systemmgr/org/orgList.jsp"
+          permission="orgManage" />
+    <menu name="配置管理" link="/jsp/component/dqdpconfig/config_list.jsp"  />
+    <menu independently="false" ref="dqdpdictionary" name="字典管理" />
+      <menu name="日志管理" permission="">
+          <menu name="接口日志查询" link="/jsp/component/dqdploger/cgi_log_list.jsp"/>
+          <menu name="用户日志查询" link="/jsp/component/dqdploger/log_list.jsp"/>
+          <menu name="系统日志下载" link="/jsp/component/dqdploger/log_system_list.jsp"/>
+      </menu>
+  </menu>
+</menus>

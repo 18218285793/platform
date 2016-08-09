@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dpdq-config platformId="">
+<commpants>
+  <commpant name="core" enabled="true" lastVer="1.0" />
+  <commpant name="sys" enabled="true" lastVer="1.0" />
+</commpants>
+</dpdq-config>
+

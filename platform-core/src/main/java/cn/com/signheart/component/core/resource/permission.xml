@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<permissions>
+    <perm code="test1" name="test权限" model="test模块"/>
+    <perm code="test2" name="test2权限" model="test模块"/>
+</permissions>
